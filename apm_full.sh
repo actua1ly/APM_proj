@@ -17,8 +17,8 @@ kill $PIDif
 echo "Enter IP Address:"
 read IP
 
-#start all processes with proper IP and start ifstat
-ifstat -d l
+#start all processes with proper IP
+
 ./APM1 "$IP"
 ./APM2 "$IP"
 ./APM3 "$IP"
@@ -36,10 +36,12 @@ PID6=$(ps aux | grep '[A]PM6' | awk '{print $2}')
 
 start="$SECONDS"
 curr="$SECONDS"-"$start"
+#start running ifstat
+ifstat -d l
 #loop FOREVER untill killed
 while [ ]; do
   # append a line that reads $SECONDS, <%cpu>, <%gpu>
-  #TO DO SYSTEM LEVEL(ifstat (RX data rates and TX transmit rates) iostat sda (harddisk writes kb/second) df -hm (Availabe_USE%))
+  #TO DO SYSTEM LEVEL(ifstat (RX data rates and TX transmit rates) done? iostat sda (harddisk writes kb/second) df -hm (Availabe_USE%))
   curr="$SECONDS"-"$start"
   echo "$curr"
   "$SECONDS" ", " "$(ps -p "$PID1" %CPU)" ", " "$(ps -p "$PID1" %gpu)" >> APM1.txt
@@ -48,6 +50,7 @@ while [ ]; do
   "$SECONDS" ", " "$(ps -p "$PID4" %CPU)" ", " "$(ps -p "$PID4" %gpu)" >> APM4.txt
   "$SECONDS" ", " "$(ps -p "$PID5" %CPU)" ", " "$(ps -p "$PID5" %gpu)" >> APM5.txt
   "$SECONDS" ", " "$(ps -p "$PID6" %CPU)" ", " "$(ps -p "$PID6" %gpu)" >> APM6.txt
+  "$(ifstat ens33 | cut -d ' ' -f 1 2)" ","  > APMsys.txt;
   #since we only want to collect every five seconds
   sleep 5
 done
