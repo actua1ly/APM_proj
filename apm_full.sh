@@ -48,7 +48,7 @@ while [ ]; do
   "$SECONDS" ", " "$(ps -p "$PID4" %CPU)" ", " "$(ps -p "$PID4" %gpu)" >> APM4.txt
   "$SECONDS" ", " "$(ps -p "$PID5" %CPU)" ", " "$(ps -p "$PID5" %gpu)" >> APM5.txt
   "$SECONDS" ", " "$(ps -p "$PID6" %CPU)" ", " "$(ps -p "$PID6" %gpu)" >> APM6.txt
-  "$(ifstat ens33 | awk ' { print $1"\t"$2 } ')" "," " $(iostat -d -k sda | awk ' { print $4 } ')" "," " $(df -h | awk ' { print $4} ')" > APMsys.txt;
+  "$(ifstat ens33 | awk ' { print $1"\t"$2 } ')" "," " $(iostat -d -k sda | awk ' { print $4 } ')" "," " $(df -h | awk ' { print $4} ')" >> APMsys.txt;
   #since we only want to collect every five seconds
   sleep 5
 done
