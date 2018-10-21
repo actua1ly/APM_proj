@@ -2,7 +2,6 @@
 
 #create cleanup function
 function cleanup {
-#if we combine the files we do the following
 PIDif=$(ps aux | grep '[i]fstat -d l' | awk '{print $2}')
 kill $PID1
 kill $PID2
@@ -11,7 +10,6 @@ kill $PID4
 kill $PID5
 kill $PID6
 kill $PIDif
-
 }
 #Prompt for IP
 echo "Enter IP Address:"
@@ -50,7 +48,7 @@ while [ ]; do
   "$SECONDS" ", " "$(ps -p "$PID4" %CPU)" ", " "$(ps -p "$PID4" %gpu)" >> APM4.txt
   "$SECONDS" ", " "$(ps -p "$PID5" %CPU)" ", " "$(ps -p "$PID5" %gpu)" >> APM5.txt
   "$SECONDS" ", " "$(ps -p "$PID6" %CPU)" ", " "$(ps -p "$PID6" %gpu)" >> APM6.txt
-  "$(ifstat ens33 | cut -d ' ' -f 1 2)" ","  > APMsys.txt;
+  "$(ifstat ens33 | awk ' { print $1"\t"$2 } ')" "," " $(iostat -d -k sda | awk ' { print $4 } ')" "," " $(df -h | awk ' { print $4} ')" > APMsys.txt;
   #since we only want to collect every five seconds
   sleep 5
 done
