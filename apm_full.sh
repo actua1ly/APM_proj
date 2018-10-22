@@ -35,7 +35,7 @@ PID6=$(ps aux | grep '[A]PM6' | awk '{print $2}')
 start="$SECONDS"
 curr="$SECONDS"-"$start"
 #start running ifstat
-ifstat -d l
+ifstat -d 1
 #loop FOREVER untill killed
 while [ ]; do
   # append a line that reads $SECONDS, <%cpu>, <%gpu>
